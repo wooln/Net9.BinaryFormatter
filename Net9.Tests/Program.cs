@@ -1,4 +1,7 @@
-﻿namespace Net9.Tests
+﻿using System.Collections;
+using System.Runtime.Serialization.Formatters.Binary;
+
+namespace Net9.Tests
 {
     internal class Program
     {

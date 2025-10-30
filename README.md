@@ -9,8 +9,8 @@ Even these types are copied and are independent:
 SerializationException
 SerializationInfo
 StreamingContext
-SerializableAttribute
-NonSerializedAttribute
+// SerializableAttribute
+// NonSerializedAttribute
 ISerializable
 ```
 It also does not use `FieldAttributes.NotSerialized` or `Type.IsSerializable (TypeAttributes.Serializable)`.
@@ -18,8 +18,8 @@ It also does not use `FieldAttributes.NotSerialized` or `Type.IsSerializable (Ty
 Since it is independent, it also means it can not do anything out of the box, since no types are attributed `[Net9.BinaryFormatter.Serializable]` or implementing `Net9.BinaryFormatter.ISerializable`, not even primitive types like int.
 So first, you would need to change your code like this:
 ````
-from [Serializable] -> [Net9.BinaryFormatter.Serializable]
-from [NonSerialized] -> [Net9.BinaryFormatter.NonSerialized]
+// from [Serializable] -> [Net9.BinaryFormatter.Serializable]
+// from [NonSerialized] -> [Net9.BinaryFormatter.NonSerialized]
 from ISerializable -> Net9.BinaryFormatter.ISerializable
 ````
 etc.

@@ -148,7 +148,8 @@ public class Program
     }
 }
 
-[Net9.BinaryFormatter.Serializable]
+// [Net9.BinaryFormatter.Serializable]
+[System.Serializable]
 public class Test
 {
     public int? nullable = null;
@@ -170,7 +171,8 @@ public class Test
 
 }
 
-[Net9.BinaryFormatter.Serializable]
+// [Net9.BinaryFormatter.Serializable]
+[System.Serializable]
 public readonly struct KeyValuePair2<TKey, TValue>
 {
 
