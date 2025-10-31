@@ -2,6 +2,7 @@
 using Net9.BinaryFormatter;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -66,7 +67,8 @@ public class Program
         var sta = new Stack<int>();
         sta.Push(45);
         sta.Push(145);
-
+        
+        Test nt;
         try
         {
             throw new Exception("lol");
@@ -76,7 +78,7 @@ public class Program
             TraceFlags.Formatter_IConvertibleFix = true;
             TraceFlags.Formatter_IConvertibleArrayFix = true;
 
-            var nt = new Test();
+            nt = new Test();
             var t = nt.dict.GetType();
 
             bf.Serialize(ms, nt);// list);
@@ -89,12 +91,29 @@ public class Program
 
         ms.Position = 0;
 
-        var g = bf.Deserialize(ms);//< List<Dictionary<int, string>>>(ms);
+        var g = (Test)bf.Deserialize(ms);//< List<Dictionary<int, string>>>(ms);
 
         //var sta2 = (Stack<int>)g;
         //var p1 = sta2.Pop();
         //var p2 = sta2.Pop();
 
+        if (g.i != nt.i) throw new Exception($"{g.i}, {nt.i}");
+        if (g.nullable != nt.nullable) throw new Exception($"nullable: {g.nullable}, {nt.nullable}");
+        if (g.nullable2 != nt.nullable2) throw new Exception($"nullable2: {g.nullable2}, {nt.nullable2}");
+        if ((int)g.icon_4 != (int)nt.icon_4) throw new Exception($"icon_4: {g.icon_4}, {nt.icon_4}");
+        if ((int)g.obj_4 != (int)nt.obj_4) throw new Exception($"obj_4: {g.obj_4}, {nt.obj_4}");
+        if (g.to != nt.to) throw new Exception($"to: {g.to}, {nt.to}");
+        if (g.don != nt.don) throw new Exception($"don: {g.don}, {nt.don}");
+        if ((int)g.comp != (int)nt.comp) throw new Exception($"comp: {g.comp}, {nt.comp}");
+        // Compare arrays
+        if (!Enumerable.SequenceEqual(g.objarr, nt.objarr)) throw new Exception("objarr sequences are not equal");
+        if (!Enumerable.SequenceEqual(g.objarr2, nt.objarr2)) throw new Exception("objarr2 sequences are not equal");
+        if (!Enumerable.SequenceEqual(g.iconarr, nt.iconarr)) throw new Exception("iconarr sequences are not equal");
+        if (!Enumerable.SequenceEqual(g.intarr, nt.intarr)) throw new Exception("intarr sequences are not equal");
+        if (!Enumerable.SequenceEqual(g.comparr, nt.comparr)) throw new Exception("comparr sequences are not equal");
+        // Compare dictionaries and lists
+        if (g.dict.Count != nt.dict.Count) throw new Exception($"dict count: {g.dict.Count}, {nt.dict.Count}");
+        if (g.dicts.Count != nt.dicts.Count) throw new Exception($"dicts count: {g.dicts.Count}, {nt.dicts.Count}");
         Console.WriteLine("Hello, World!");
     }
 }
