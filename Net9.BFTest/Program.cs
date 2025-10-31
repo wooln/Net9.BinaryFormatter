@@ -1,4 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
+
+using System.Collections;
 using Net9.BinaryFormatter;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -115,6 +117,34 @@ public class Program
         if (g.dict.Count != nt.dict.Count) throw new Exception($"dict count: {g.dict.Count}, {nt.dict.Count}");
         if (g.dicts.Count != nt.dicts.Count) throw new Exception($"dicts count: {g.dicts.Count}, {nt.dicts.Count}");
         Console.WriteLine("Hello, World!");
+        
+        HashTableTest();
+    }
+
+    private static void HashTableTest()
+    {
+        var ht = new Hashtable();
+        ht.Add("a", "b");
+        ht.Add(1, 2);
+        
+        var bf = new BinaryFormatter();
+        var ms = new MemoryStream();
+        bool throwsError = false;
+        try
+        {
+            bf.Serialize(ms, ht);
+        }
+        catch (Net9.BinaryFormatter.SerializationException ex)
+        {
+            Console.Out.WriteLine(ex.Message);
+            throwsError = true;
+        }
+
+        if (!throwsError) throw new Exception("should: Unhandled exception. Net9.BinaryFormatter.SerializationException: Type 'System.Collections.Hashtable' in Assembly 'System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e' is not marked as serializable.\n ");
+        // ms.Seek(0, SeekOrigin.Begin);
+        // var graph = (Hashtable)bf.Deserialize(ms);
+        // if ((string)graph["a"]! != "b") throw new Exception("a");
+        // if ((int)graph[1] != 2) throw new Exception("1");
     }
 }
 
