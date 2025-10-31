@@ -29,8 +29,9 @@ namespace Net9.BinaryFormatter
 
         public virtual bool IsSerializable(Type type)
         {
-            // 特别允许Hashtable类型通过序列化检查
-            if (type == typeof(System.Collections.Hashtable))
+            // 特别允许Hashtable和NameValueCollection类型通过序列化检查
+            if (type == typeof(System.Collections.Hashtable) || 
+                type == typeof(System.Collections.Specialized.NameValueCollection))
                 return true;
 
             if (IsSerializableHandlers != null)
@@ -63,6 +64,12 @@ namespace Net9.BinaryFormatter
             if (typeName == "System.Collections.Hashtable" && assembly.FullName!.StartsWith("System.Private.CoreLib"))
             {
                 return typeof(System.Collections.Hashtable);
+            }
+            
+            if (typeName == "System.Collections.Specialized.NameValueCollection" && 
+                assembly.FullName!.StartsWith("System.Collections.Specialized"))
+            {
+                return typeof(System.Collections.Specialized.NameValueCollection);
             }
 
             throw new Exception($"Not allowed to load assembly '{typeName}'");

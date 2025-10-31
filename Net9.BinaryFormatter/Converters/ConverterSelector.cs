@@ -30,6 +30,7 @@ namespace Net9.BinaryFormatter
             res.Add(new GenericHashSetConverterFactory());
             res.Add(new ExceptionConverter());
             res.Add(new HashtableConverter());
+            res.Add(new NameValueCollectionConverter());
             return res;
         }
 
